@@ -60,7 +60,7 @@
             <ul id="Side_Menu" class="nav nav-pills d-block">
                 <li class="nav-item"><span class="fas fa-th text-warning mx-2"></span><a
                             href="Dashboard.php">Dashboard</a></li>
-                <li class="nav-item active"><span class="fas fa-plus-square text-warning mx-2"></span><a href="AddNewPost.php">Add
+                <li class="nav-item"><span class="fas fa-plus-square text-warning mx-2"></span><a href="AddNewPost.php">Add
                         New
                         Post</a>
                 </li>
@@ -68,7 +68,7 @@
                             href="#">Categories</a></li>
                 <li class="nav-item"><span class="far fa-user text-warning mx-2"></span><a href="Admins.php">Manage Admins</a>
                 </li>
-                <li class="nav-item"><span class="fal fa-user text-warning mx-2"></span><a href="Comments.php">Comments</a>
+                <li class="nav-item active"><span class="fal fa-user text-warning mx-2"></span><a href="Comments.php">Comments</a>
 					
 					<?php
 						$noOfComments = getAllUnapprovedComments();
