@@ -11,7 +11,7 @@
 		if (empty($username) || empty($password))
 		{
 			$_SESSION["errorMessage"] = "All fields must be filled out.";
-			redirectTo("Login.php");
+			//redirectTo("Login.php");
 		}
 		else
 		{
@@ -29,13 +29,12 @@
 			{
 				echo "Did not work";
 				$_SESSION["errorMessage"] = "Invalid Login !";
-				//redirectTo("Login.php");
 			}
 		}
 	}
 
-?><br>
-<!doctype>
+?>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -56,8 +55,7 @@
 <body style="background: url(images/drop.jpg) no-repeat center center fixed; background-size: cover; margin-top: -36px; height: 100%">
 <div style="height: 10px; background: rebeccapurple;"></div>
 <nav class="navbar navbar-expand-lg navbar-default bg-white">
-    <a href="Dashboard.php" class="navbar-brand"> <img src="images/logos/academyLogo2.png" alt="Logo" width="250"
-                                                       height="75"></a>
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -69,6 +67,8 @@
 </nav>
 <div style="height: 10px; background: rebeccapurple;"></div>
 <div class="container-fluid">
+    <a href="Dashboard.php" class="navbar-brand offset-1 mt-5"><img src="images/logos/academyLogo2.png" alt="Logo" width="100"
+                                                                    height="130"></a>
     <div class="row">
 
         <div class="offset-4 col-sm-4 align mt-5 pt-5">
@@ -78,8 +78,9 @@
             <br>
             <br>
             <br>
-            <h1 class="h1 h1-responsive card-title text-white font-weight-bold">Welcome Back !</h1>
+            <h1 class="h1 h1-responsive card-title text-white font-weight-bold offset-3">Welcome Back !</h1>
             <div>
+
                 <div><?php echo errorMessage();
 						echo successMessage(); ?></div>
                 <form action="Login.php" method="post">

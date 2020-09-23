@@ -5,26 +5,30 @@
 
 <?php confirmLogin(); ?>
 <?php
+	if (isset($_GET["Edit"]))
+	{
+		$editId = $_GET["Edit"];
+	}
 	if (isset($_POST["Submit"]))
 	{
-		$editId = $_GET["id"];
 		$currentTime = datetime();
 		$title = $_POST["title"];
-		$category = $_POST["category"];
+		$category = $_POST["Category"];
 		$author = $_SESSION["currentUser"];
 		$image = $_FILES["imageselect"]["name"];
 		$target = "Upload/" . basename($image);
 		$postarea = $_POST["postarea"];
 		
+		echo "Category: $category<br>";
 		if (empty($category))
 		{
-			$_SESSION["errorMessage"] = "Please enter category name";
-			redirectTo("EditPost.php");
+			$_SESSION["errorMessage"] = "Please enter category name!!!";
+			//redirectTo("EditPost.php?Edit=$editId");
 		}
 		if (empty($title) || strlen($title) < 2)
 		{
 			$_SESSION["errorMessage"] = "Title cannot be empty of less than 2 characters";
-			redirectTo("EditPost.php");
+			//redirectTo("EditPost.php?Edit=$editId");
 		}
 		if (empty($postarea) || strlen($postarea) < 2)
 		{
@@ -33,13 +37,24 @@
 		else if (strlen($category) > 99)
 		{
 			$_SESSION["errorMessage"] = "Category name should not be greater than 99 characters";
-			redirectTo("EditPost.php");
+			//redirectTo("EditPost.php?Edit=$editId");
 		}
 		else
 		{
 			global $connection;
-			$query = "update admin_posts set datetime='$currentTime', title='$title', category='$category', image='$image', post='$postarea' where id='$editId'";
-			$execute = $connection->query($query);
+			//			$query = "update admin_posts set datetime='$currentTime', title='$title', category='$category', image='$image', post='$postarea' where id='$editId'";
+			$query = "update admin_posts set datetime=:datetime, title=:title, category=:category, image=:image, post=:post where id=:id";
+			
+			
+			$stmt = $connection->prepare($query);
+			$stmt->bindValue(':datetime', datetime());
+			$stmt->bindValue(':title', $title);
+			$stmt->bindValue(':category', $category);
+			$stmt->bindValue(':image', $image);
+			$stmt->bindValue(':post', $postarea);
+			$stmt->bindValue(':post', $postarea);
+			$stmt->bindValue(':id', $editId);
+			$execute = $stmt->execute();
 			
 			move_uploaded_file($_FILES["imageselect"]["tmp_name"], $target);
 			if ($execute)
@@ -50,7 +65,6 @@
 			else
 			{
 				$_SESSION["errorMessage"] = "Something went wrong. Try Again !";
-				redirectTo("EditPost.php");
 			}
 			
 		}
@@ -77,15 +91,15 @@
 <body>
 <div style="height: 10px; background: rebeccapurple;"></div> <!--Header Start-->
 <nav class="navbar navbar-expand-lg navbar-default bg-light">
-    <a href="Blog.php" class="navbar-brand"> <img src="images/logos/Logo.png" alt="Logo" width="250"
-                                                  height="75"></a>
+    <a href="index.php" class="navbar-brand"> <img src="images/logos/academyLogo2.png" alt="Logo" width="150"
+                                                   height="80"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active btn btn-dark btn-sm"><a class="nav-link" href="Blog.php">Blog Home<span
+            <li class="nav-item active btn btn-dark btn-sm"><a class="nav-link" href="index.php">Blog Home<span
                             class="sr-only">(current)</span></a></li>
             <!--<li class="nav-item"><a class="nav-link" href="#">Home</a></li>-->
             <!--<li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
@@ -109,12 +123,11 @@
             <ul id="Side_Menu" class="nav nav-pills d-block">
                 <li class="nav-item"><span class="fas fa-th text-warning mx-2"></span><a
                             href="Dashboard.php">Dashboard</a></li>
-                <li class="nav-item active"><span class="fas fa-plus-square text-warning mx-2"></span><a href="AddNewPost.php">Add
-                        New
-                        Post</a>
+                <li class="nav-item active"><span class="fas fa-plus-square text-warning mx-2"></span><a href="AddNewPost.php">Manage
+                        Posts</a>
                 </li>
                 <li class="nav-item"><span class="fas fa-user text-warning mx-2"></span><a
-                            href="#">Categories</a></li>
+                            href="Categories.php">Categories</a></li>
                 <li class="nav-item"><span class="far fa-user text-warning mx-2"></span><a href="Admins.php">Manage Admins</a>
                 </li>
                 <li class="nav-item"><span class="fal fa-user text-warning mx-2"></span><a href="Comments.php">Comments</a>
@@ -127,7 +140,7 @@
                             <span class="badge-pill badge-warning ml-1 small fa-pull-right"><?php echo $noOfComments; ?> </span>
 						<?php } ?>
                 </li>
-                <li class="nav-item"><span class="fab fa-github-square text-warning mx-2"></span><a href="Blog.php" target="_blank">Live
+                <li class="nav-item"><span class="fab fa-github-square text-warning mx-2"></span><a href="index.php" target="_blank">Live
                         Blog</a>
                 </li>
                 <li class="nav-item"><span class="fas fa-sign-out-alt text-warning mx-2"></span><a href="Logout.php">Logout</a>
@@ -141,34 +154,30 @@
             <div>
 				<?php
 					global $connection;
+					$editId = $_GET["Edit"];
 					
-					$editId = $_GET["id"];
 					$query = "select * from admin_posts where id='$editId'";
 					$execute = $connection->query($query);
 					if ($dataRows = $execute->fetch())
 					{
-						$title = $dataRows["title"];
-						$category = $dataRows["category"];
+						$title = htmlentities($dataRows["title"]);
+						$category = htmlentities($dataRows["category"]);
 						$image = $dataRows["image"];
-						$post = $dataRows["post"];
+						$post = htmlentities($dataRows["post"]);
 					}
-				
 				?>
-                <form action="EditPost.php?id=<?php echo $editId; ?>" method="post" enctype="multipart/form-data">
+                <form action="EditPost.php?Edit=<?php echo $editId; ?>" method="post" enctype="multipart/form-data">
                     <fieldset>
                         <div class="form-group">
                             <label class="purple-text"
                                    for="title">Title:</label>
-                            <input class="form-control" type="text" name="title" id="title"
-                                   value="<?php echo $title; ?>"
-                                   placeholder="Title">
+                            <input class="form-control" type="text" name="title" id="title" value="<?php echo $title; ?>" placeholder="Title">
                         </div>
                         <div class="form-group">
                             <span class="card-text">Existing Category: </span><?php echo $category; ?><br>
                             <label class="purple-text"
-                                   for="title">Category:</label>
-                            <select class="form-control" name="category" id="category"
-                                    data-value="<?php echo $category; ?>">
+                                   for="category">Category:</label>
+                            <select class="form-control" name="Category" id="Category">
 								<?php
 									global $connection;
 									$query = "select * from category order by datetime desc";
@@ -176,7 +185,7 @@
 									while ($dataRows = $execute->fetch())
 									{
 										$Id = $dataRows["id"];
-										$name = $dataRows["name"];
+										$name = htmlentities($dataRows["name"]);
 										?>
                                         <option value="<?php echo $name; ?>"><?php echo $name; ?></option>
 									<?php } ?>
@@ -184,7 +193,7 @@
                         </div>
                         <div class="form-group">
                             <span class="card-text">Existing Image: </span><img src="Upload/<?php echo $image; ?>"
-                                                                                width="170px" height="70px" alt=""><br>
+                                                                                width="50px" height="60px" alt=""><br>
                             <label class="purple-text"
                                    for="imageselect">Image Select:</label>
                             <input class="form-control" type="file" name="imageselect" id="imageselect"
@@ -196,7 +205,7 @@
                             <textarea class="form-control-file" name="postarea" id="postarea" cols="30"
                                       rows="4"><?php echo $post; ?></textarea>
                         </div>
-                        <input class="btn btn-success btn-block" type="Submit" name="Submit" value="Update Post">
+                        <input class="btn btn-primary btn-block" type="Submit" name="Submit" value="Update Post">
                     </fieldset>
                     <br>
                 </form>

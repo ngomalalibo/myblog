@@ -26,8 +26,8 @@
 
 <div style="height: 10px; background: rebeccapurple;"></div>
 <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
-    <a href="Blog.php" class="navbar-brand"> <img src="images/logos/academyLogo2.png" alt="Logo" width="150"
-                                                  height="80"></a>
+    <a href="index.php" class="navbar-brand"> <img src="images/logos/academyLogo2.png" alt="Logo" width="150"
+                                                   height="80"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -35,7 +35,7 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active btn btn-dark btn-sm"><a class="nav-link" href="Blog.php">Blog Home<span
+            <li class="nav-item active btn btn-dark btn-sm"><a class="nav-link" href="index.php">Blog Home<span
                             class="sr-only">(current)</span></a></li>
             <!--<li class="nav-item"><a class="nav-link" href="#">Home</a></li>-->
             <!--<li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
@@ -44,7 +44,7 @@
             <li class="nav-item"><a class="nav-link" href="#">Feature</a></li>-->
         </ul>
     </div>
-    <form action="Blog.php" class="form-inline my-2 my-lg-0" method="get">
+    <form action="index.php" class="form-inline my-2 my-lg-0" method="get">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="Search">
         <button class="btn btn-outline-success my-2 my-sm-0 rounded-pill" type="submit" name="SearchButton">Go</button>
     </form>
@@ -60,9 +60,8 @@
             <ul id="Side_Menu" class="nav nav-pills d-block">
                 <li class="nav-item"><span class="fas fa-th text-warning mx-2"></span><a
                             href="Dashboard.php">Dashboard</a></li>
-                <li class="nav-item"><span class="fas fa-plus-square text-warning mx-2"></span><a href="AddNewPost.php">Add
-                        New
-                        Post</a>
+                <li class="nav-item"><span class="fas fa-plus-square text-warning mx-2"></span><a href="AddNewPost.php">Manage
+                        Posts</a>
                 </li>
                 <li class="nav-item"><span class="fas fa-user text-warning mx-2"></span><a
                             href="#">Categories</a></li>
@@ -78,7 +77,7 @@
                             <span class="badge-pill badge-warning ml-1 small fa-pull-right"><?php echo $noOfComments; ?> </span>
 						<?php } ?>
                 </li>
-                <li class="nav-item"><span class="fab fa-github-square text-warning mx-2"></span><a href="Blog.php" target="_blank">Live
+                <li class="nav-item"><span class="fab fa-github-square text-warning mx-2"></span><a href="index.php" target="_blank">Live
                         Blog</a>
                 </li>
                 <li class="nav-item"><span class="fas fa-sign-out-alt text-warning mx-2"></span><a href="Logout.php">Logout</a>

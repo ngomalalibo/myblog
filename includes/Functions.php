@@ -60,6 +60,18 @@
 		
 	}
 	
+	function getCategories()
+	{
+		global $connection;
+		$query = "select * from category order by datetime desc";
+		$execute = $connection->query($query);
+		while ($dataRows = $execute->fetch())
+		{
+			return $dataRows;
+		}
+		
+	}
+	
 	function loginStatus()
 	{
 		if (isset($_SESSION["currentUser"]))

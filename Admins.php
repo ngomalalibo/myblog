@@ -15,17 +15,14 @@
 		if (empty($username) || empty($password) || empty($conpassword))
 		{
 			$_SESSION["errorMessage"] = "All fields must be filled out.";
-			redirectTo("Admins.php");
 		}
 		else if (strlen($password) < 4)
 		{
 			$_SESSION["errorMessage"] = "Password should be at least 4 characters.";
-			redirectTo("Admins.php");
 		}
 		else if (!($password === $conpassword))
 		{
 			$_SESSION["errorMessage"] = "Password and confirm password fields should match !";
-			redirectTo("Admins.php");
 		}
 		else
 		{
@@ -36,17 +33,15 @@
 			$stmt->bindValue(':datetime', datetime());
 			$stmt->bindValue(':username', $username);
 			$stmt->bindValue(':password', $password);
-			$stmt->bindValue(':addedby', "Ngo Alalibo");
+			$stmt->bindValue(':addedby', $_SESSION["currentUser"]);
 			$Execute = $stmt->execute();
 			if ($Execute)
 			{
 				$_SESSION["successMessage"] = "Admin added Successfully";
-				redirectTo("Admins.php");
 			}
 			else
 			{
 				$_SESSION["errorMessage"] = "Something went wrong. Try Again !";
-				redirectTo("Admins.php");
 			}
 		}
 	}
@@ -72,7 +67,7 @@
 <body>
 <div style="height: 10px; background: rebeccapurple;"></div>
 <nav class="navbar navbar-expand-lg navbar-default bg-light">
-    <a href="Dashboard.php" class="navbar-brand"> <img src="images/logos/Logo.png" alt="Logo" width="250"
+    <a href="Dashboard.php" class="navbar-brand"> <img src="images/logos/academyLogo2.png" alt="Logo" width="250"
                                                        height="75"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +75,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active btn btn-dark btn-sm"><a class="nav-link" href="Blog.php">Blog Home<span
+            <li class="nav-item active btn btn-dark btn-sm"><a class="nav-link" href="index.php">Blog Home<span
                             class="sr-only">(current)</span></a></li>
             <!--<li class="nav-item"><a class="nav-link" href="#">Home</a></li>-->
             <!--<li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
@@ -100,9 +95,8 @@
             <ul id="Side_Menu" class="nav nav-pills d-block">
                 <li class="nav-item"><span class="fas fa-th text-warning mx-2"></span><a
                             href="Dashboard.php">Dashboard</a></li>
-                <li class="nav-item"><span class="fas fa-plus-square text-warning mx-2"></span><a href="AddNewPost.php">Add
-                        New
-                        Post</a>
+                <li class="nav-item"><span class="fas fa-plus-square text-warning mx-2"></span><a href="AddNewPost.php">Manage
+                        Posts</a>
                 </li>
                 <li class="nav-item"><span class="fas fa-user text-warning mx-2"></span><a
                             href="#">Categories</a></li>
@@ -118,7 +112,7 @@
                             <span class="badge-pill badge-warning ml-1 small fa-pull-right"><?php echo $noOfComments; ?> </span>
 						<?php } ?>
                 </li>
-                <li class="nav-item"><span class="fab fa-github-square text-warning mx-2"></span><a href="Blog.php" target="_blank">Live
+                <li class="nav-item"><span class="fab fa-github-square text-warning mx-2"></span><a href="index.php" target="_blank">Live
                         Blog</a>
                 </li>
                 <li class="nav-item"><span class="fas fa-sign-out-alt text-warning mx-2"></span><a href="Logout.php">Logout</a>
@@ -178,9 +172,9 @@
 						while ($dataRows = $execute->fetch())
 						{
 							$Id = $dataRows["id"];
-							$username = $dataRows["username"];
+							$username = nl2br($dataRows["username"]);
 							$dateTime = $dataRows["datetime"];
-							$addedby = $dataRows["addedby"];
+							$addedby = nl2br($dataRows["addedby"]);
 							$srno++
 							
 							?>

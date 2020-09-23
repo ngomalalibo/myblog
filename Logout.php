@@ -5,5 +5,4 @@
 	session_destroy();
 	$_SESSION["successMessage"] = "Logout successful !";
 	redirectTo("Login.php");
-
 ?>

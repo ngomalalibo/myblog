@@ -22,27 +22,33 @@
 		if (empty($name) || empty($email) || empty($comment))
 		{
 			$_SESSION["errorMessage"] = "All fields are required";
-			redirectTo("FullPost.php");
 		}
 		else if (strlen($comment) >= 300)
 		{
 			$_SESSION["errorMessage"] = "Comment should be less than 300 characters";
-			redirectTo("FullPost.php");
 		}
 		else
 		{
 			global $connection;
-			$query = "insert into comments (datetime, name, email, comment, status,postid, approvedby) values('$currentTime','$name','$email', '$comment', 'OFF', '$postId', 'Pending')";
-			$execute = $connection->query($query);
+			$query = "insert into comments (datetime, name, email, comment, status,postid, approvedby) values(:datetime,:name,:email, :comment, :status, :post, :approvedby)";
+			
+			$stmt = $connection->prepare($query);
+			$stmt->bindValue(':datetime', $currentTime);
+			$stmt->bindValue(':name', $name);
+			$stmt->bindValue(':email', $email);
+			$stmt->bindValue(':comment', $comment);
+			$stmt->bindValue(':status', 'OFF');
+			$stmt->bindValue(':post', $postId);
+			$stmt->bindValue(':approvedby', $_SESSION["currentUser"]);
+			$execute = $stmt->execute();
+			
 			if ($execute)
 			{
 				$_SESSION["successMessage"] = "Comment submitted Successfully";
-				redirectTo("FullPost.php?id={$postId}");
 			}
 			else
 			{
 				$_SESSION["errorMessage"] = "Something went wrong. Try Again !";
-				redirectTo("FullPost.php?id={$postId}");
 			}
 		}
 	}
@@ -70,8 +76,8 @@
 
 <div style="height: 10px; background: rebeccapurple;"></div>
 <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
-    <a href="Blog.php" class="navbar-brand"> <img src="images/logos/academyLogo2.png" alt="Logo" width="150"
-                                                  height="80"></a>
+    <a href="index.php" class="navbar-brand"> <img src="images/logos/academyLogo2.png" alt="Logo" width="150"
+                                                   height="80"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -79,7 +85,7 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active"><a class="nav-link" href="Blog.php">Blog Home<span
+            <li class="nav-item active"><a class="nav-link" href="index.php">Blog Home<span
                             class="sr-only">(current)</span></a></li>
             <li class="nav-item"><a class="nav-link" href="Dashboard.php">Dashboard</a></li>
             <!--<li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
@@ -88,16 +94,19 @@
             <li class="nav-item"><a class="nav-link" href="#">Feature</a></li>-->
         </ul>
     </div>
-    <form action="Blog.php" class="form-inline my-2 my-lg-0" method="get">
+    <form action="index.php" class="form-inline my-2 my-lg-0" method="get">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="Search">
         <button class="btn btn-outline-success my-2 my-sm-0 rounded-pill" type="submit" name="SearchButton">Go</button>
     </form>
 </nav>
 <div style="height: 10px; background: rebeccapurple;"></div>
+<br>
+<br>
+<br>
 <div class="container">
     <div class="blog-header">
-        <h1 class="text-dark">The Complete Responsive Blog</h1>
-        <p class="lead"> The complete blog by Ngo Alalibo</p>
+        <h1 class="text-primary">Ngo Alalibo's Blog</h1>
+        <h6 class="heading">The truth is the most valuable thing... In every field of endeavour.</h6>
     </div>
     <div class="row">
         <div class="col-sm-8">
@@ -120,11 +129,11 @@
 				{
 					$Id = $dataRows["id"];
 					$dateTime = $dataRows["datetime"];
-					$title = $dataRows["title"];
-					$category = $dataRows["category"];
-					$author = $dataRows["author"];
+					$title = htmlentities($dataRows["title"]);
+					$category = htmlentities($dataRows["category"]);
+					$author = htmlentities($dataRows["author"]);
 					$image = $dataRows["image"];
-					$post = $dataRows["post"];
+					$post = htmlentities($dataRows["post"]);
 					?>
                     <div class="card card thumbnail gray-background m-5 p-5 overflow-hidden">
                         <img class="img-responsive align-self-center" src="Upload/<?php echo $image; ?>" alt=""
@@ -136,7 +145,7 @@
                                 Published
                                 on: <?php echo htmlentities($dateTime) ?></p>
                             <p class="text-justify"><?php
-									echo $post;
+									echo nl2br($post);
 								?></p>
                         </div>
                     </div>
@@ -178,9 +187,9 @@
 				while ($dataRows = $execute->fetch())
 				{
 					$dateTime = $dataRows["datetime"];
-					$name = $dataRows["name"];
-					$email = $dataRows["email"];
-					$comment = $dataRows["comment"];
+					$name = nl2br($dataRows["name"]);
+					$email = nl2br($dataRows["email"]);
+					$comment = nl2br($dataRows["comment"]);
 					?>
                     <div class="rgba-grey-slight clearfix p-2">
                         <img class="float-left m-1" src="images/dummy.jpg" alt="" width="100px"
@@ -200,9 +209,9 @@
                 <img src="images/ngo.jpg" class="img-responsive figure-img img-fluid rounded" alt="me">
                 <figcaption class="figure-caption text-justify">
 
-                    <p><span class="50">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam beatae dolor fugiat id necessitatibus odit omnis qui tempora tempore, vitae! Animi commodi eum nostrum optio quo reiciendis. Aut, ipsam iste.</span>
-                    </p>
-                    <p><span class="50">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam beatae dolor fugiat id necessitatibus odit omnis qui tempora tempore, vitae! Animi commodi eum nostrum optio quo reiciendis. Aut, ipsam iste.</span>
+                    <p><span class="50">Ngo Alalibo is a life-long learning, software engineer and information technology enthusiast.
+                            I believe in the power and purpose of information within an organization and nation.
+                            I am passionate about innovation, satisfying customers, learning and mentoring.</span>
                     </p>
                 </figcaption>
             </figure>
@@ -218,9 +227,9 @@
 						while ($dataRows = $execute->fetch())
 						{
 							$id = $dataRows["id"];
-							$category = $dataRows["name"];
+							$category = htmlentities($dataRows["name"]);
 							?>
-                            <span><a href="Blog.php?Category=<?php echo $category; ?>"><?php echo $category . "<br>"; ?></a></span>
+                            <span><a href="index.php?Category=<?php echo $category; ?>"><?php echo $category . "<br>"; ?></a></span>
 						<?php } ?>
                 </div>
                 <div class="card-footer"></div>
@@ -241,9 +250,9 @@
 						while ($dataRows = $execute->fetch())
 						{
 							$id = $dataRows["id"];
-							$title = $dataRows["title"];
-							$dateTime = $dataRows["datetime"];
-							$post = $dataRows["post"];
+							$title = nl2br($dataRows["title"]);
+							$dateTime = nl2br($dataRows["datetime"]);
+							$post = nl2br($dataRows["post"]);
 							$image = $dataRows["image"];
 							?>
                             <div>

@@ -25,8 +25,8 @@
 
 <div style="height: 10px; background: rebeccapurple;"></div>
 <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
-    <a href="Blog.php" class="navbar-brand"> <img src="images/logos/academyLogo2.png" alt="Logo" width="150"
-                                                  height="80"></a>
+    <a href="index.php" class="navbar-brand"> <img src="images/logos/academyLogo2.png" alt="Logo" width="150"
+                                                   height="80"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -34,7 +34,7 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active"><a class="nav-link" href="Blog.php">Blog Home<span
+            <li class="nav-item active"><a class="nav-link" href="index.php">Blog Home<span
                             class="sr-only">(current)</span></a></li>
             <li class="nav-item"><a class="nav-link" href="Dashboard.php">Dashboard</a></li>
             <!--<li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
@@ -43,7 +43,7 @@
             <li class="nav-item"><a class="nav-link" href="#">Feature</a></li>-->
         </ul>
     </div>
-    <form action="Blog.php" class="form-inline my-2 my-lg-0" method="get">
+    <form action="index.php" class="form-inline my-2 my-lg-0" method="get">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="Search">
         <button class="btn btn-outline-success my-2 my-sm-0 rounded-pill small" type="submit" name="SearchButton">Go</button>
     </form>
@@ -54,8 +54,8 @@
 <br>
 <div class="container">
     <div class="blog-header">
-        <h1 class="text-dark">The Complete Responsive Blog</h1>
-        <p class="lead"> The complete blog by Ngo Alalibo</p>
+        <h1 class="text-primary">Ngo Alalibo's Blog</h1>
+        <h6 class="heading">The truth is the most valuable thing... In every field of endeavour.</h6>
     </div>
     <div class="row">
         <div class="col-sm-8">
@@ -94,11 +94,11 @@
 				{
 					$Id = $dataRows["id"];
 					$dateTime = $dataRows["datetime"];
-					$title = $dataRows["title"];
-					$category = $dataRows["category"];
-					$author = $dataRows["author"];
+					$title = htmlentities($dataRows["title"]);
+					$category = htmlentities($dataRows["category"]);
+					$author = htmlentities($dataRows["author"]);
 					$image = $dataRows["image"];
-					$post = $dataRows["post"];
+					$post = htmlentities($dataRows["post"]);
 					?>
                     <div class="card card thumbnail gray-background m-5 p-5 overflow-hidden">
                         <img class="img-responsive align-self-center" src="Upload/<?php echo $image; ?>" alt=""
@@ -146,7 +146,7 @@
 						{
 							?>
                             <li class="page-item">
-                                <a class="page-link" href="Blog.php?Page=<?php echo $page - 1; ?>" aria-label="Previous">
+                                <a class="page-link" href="index.php?Page=<?php echo $page - 1; ?>" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                     <span class="sr-only">Previous</span>
                                 </a>
@@ -168,12 +168,12 @@
 							{
 								?>
 
-                                <li class="page-item active"><a class="page-link" href="Blog.php?Page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                                <li class="page-item active"><a class="page-link" href="index.php?Page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
 							<?php }
 							else
 							{
 								?>
-                                <li class="page-item"><a class="page-link" href="Blog.php?Page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                                <li class="page-item"><a class="page-link" href="index.php?Page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
 							<?php } ?>
 						<?php } ?>
 					<?php
@@ -181,7 +181,7 @@
 						{
 							?>
                             <li class="page-item">
-                                <a class="page-link" href="Blog.php?Page=<?php echo $page + 1; ?>" aria-label="Next">
+                                <a class="page-link" href="index.php?Page=<?php echo $page + 1; ?>" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                     <span class="sr-only">Next</span>
                                 </a>
@@ -217,9 +217,9 @@
 						while ($dataRows = $execute->fetch())
 						{
 							$id = $dataRows["id"];
-							$category = $dataRows["name"];
+							$category = htmlentities($dataRows["name"]);
 							?>
-                            <span><a href="Blog.php?Category=<?php echo $category; ?>"><?php echo $category . "<br>"; ?></a></span>
+                            <span><a href="index.php?Category=<?php echo $category; ?>"><?php echo $category . "<br>"; ?></a></span>
 						<?php } ?>
                 </div>
                 <div class="card-footer"></div>
@@ -239,16 +239,16 @@
 						while ($dataRows = $execute->fetch())
 						{
 							$id = $dataRows["id"];
-							$title = $dataRows["title"];
+							$title = htmlentities($dataRows["title"]);
 							$dateTime = $dataRows["datetime"];
-							$post = $dataRows["post"];
+							$post = htmlentities($dataRows["post"]);
 							$image = $dataRows["image"];
 							?>
                             <div>
                                 <figure class="figure">
                                     <img class="img-fluid img-thumbnail figure-img m-2 float-left" src="Upload/<?php echo $image; ?>" alt="post" width="70px" height="80px">
                                     <figcaption class="figure-caption float-right">
-                                        <p class="my-1 py-0"><span><a href="Fullpost.php?id=<?php echo $id; ?>"><?php echo htmlentities($title); ?></a></span></p>
+                                        <p class="my-1 py-0"><span><a href="Fullpost.php?id=<?php echo $id; ?>"><?php echo $title; ?></a></span></p>
                                         <p class="text-dark large-2 my-1 py-0"><?php
 												if (strlen($post) > 15)
 												{
