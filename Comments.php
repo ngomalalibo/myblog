@@ -64,7 +64,7 @@
                         Posts</a>
                 </li>
                 <li class="nav-item"><span class="fas fa-user text-warning mx-2"></span><a
-                            href="#">Categories</a></li>
+                            href="Categories.php">Categories</a></li>
                 <li class="nav-item"><span class="far fa-user text-warning mx-2"></span><a href="Admins.php">Manage Admins</a>
                 </li>
                 <li class="nav-item active"><span class="fal fa-user text-warning mx-2"></span><a href="Comments.php">Comments</a>

@@ -137,7 +137,7 @@
 					?>
                     <div class="card card thumbnail gray-background m-5 p-5 overflow-hidden">
                         <img class="img-responsive align-self-center" src="Upload/<?php echo $image; ?>" alt=""
-                             width="600" height="500">
+                             width="400" height="500">
                         <div class="caption">
                             <h3 class="blue-text hoverable align-items-stretch"
                                 id="heading"><?php echo htmlentities($title); ?></h3>
@@ -259,7 +259,7 @@
                                 <figure class="figure">
                                     <img class="img-fluid img-thumbnail figure-img m-2 float-left" src="Upload/<?php echo $image; ?>" alt="post" width="70px" height="80px">
                                     <figcaption class="figure-caption float-right">
-                                        <p class="my-1 py-0"><span><a href="Fullpost.php?id=<?php echo $id; ?>"><?php echo htmlentities($title); ?></a></span></p>
+                                        <p class="my-1 py-0"><span><a href="FullPost.php?id=<?php echo $id; ?>"><?php echo htmlentities($title); ?></a></span></p>
                                         <p class="text-dark large-2 my-1 py-0"><?php
 												if (strlen($post) > 15)
 												{
