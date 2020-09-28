@@ -10,7 +10,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Blog Page</title>
+    <title>Ngo Alalibo's Blog</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/mdb.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -58,7 +58,7 @@
         <h6 class="heading">The truth is the most valuable thing... In every field of endeavour.</h6>
     </div>
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-9">
 			<?php
 				global $connection;
 				if (isset($_GET["SearchButton"])) /*search button*/
@@ -100,11 +100,11 @@
 					$image = $dataRows["image"];
 					$post = htmlentities($dataRows["post"]);
 					?>
-                    <div class="card card thumbnail gray-background m-5 p-5 overflow-hidden">
+                    <div class="card thumbnail gray-background py-5 mt-5 px-0 px-3 overflow-hidden">
                         <img class="img-responsive align-self-center" src="Upload/<?php echo $image; ?>" alt=""
                              width="400" height="500">
                         <div class="caption">
-                            <h3 class="blue-text hoverable align-items-stretch"
+                            <h3 class="blue-text hoverable align-items-stretch pt-2"
                                 id="heading"><?php echo htmlentities($title); ?></h3>
                             <p class="text-black-50 font-small">Category: <?php echo htmlentities($category); ?>
                                 Published
@@ -120,7 +120,7 @@
 
 
                             </p>
-                            <p class="text-justify"><?php
+                            <h5 style="color: #333; font-family: Philosopher; font-size: 18px; line-height: 1.42857143;" class="text-justify"><?php
 									
 									if (strlen($post) > 150)
 									{
@@ -130,7 +130,7 @@
 									else
 									{
 										echo $post;
-									} ?></p>
+									} ?></h5>
                         </div>
                         <a href="FullPost.php?id=<?php echo $Id; ?>"><span class="btn btn-info float-right">Read more &rsaquo;&rsaquo;&rsaquo;</span></a>
                     </div>
@@ -192,7 +192,7 @@
             </nav>
 
         </div>
-        <div class="offset-1 col-sm-3"><!--side area-->
+        <div class="col-sm-3"><!--side area-->
             <h1>About Me</h1>
             <figure class="figure">
                 <img src="images/ngo.jpg" class="img-responsive figure-img img-fluid" alt="me">

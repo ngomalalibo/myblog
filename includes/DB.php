@@ -1,5 +1,7 @@
 <?php
+	echo "Connection setup";
 	$server = "mysql:host=68.66.226.77:3306;dbname=bestzoei_phpcms;charset=utf8";
+	//	$server = "mysql:host=41.190.31.99:3306;dbname=bestzoei_phpcms;charset=utf8";
 	//	$server = "mysql:host=localhost;dbname=bestzoei_phpcms;charset=utf8";
 	$user = "bestzoei_cms";
 	$pass = "phpcms1234";
